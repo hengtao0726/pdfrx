@@ -14,6 +14,7 @@ import 'package:vector_math/vector_math_64.dart' as vec;
 
 import '../../pdfrx.dart';
 import '../utils/edge_insets_extensions.dart';
+import '../utils/openharmony_render.dart';
 import '../utils/platform.dart';
 import 'interactive_viewer.dart' as iv;
 import 'internals/pdf_error_widget.dart';
@@ -1510,7 +1511,7 @@ class _PdfViewerState extends State<PdfViewer>
       if (prev != null && !prev.isDirty && prev.scale == scale) return;
       PdfImage? img;
       try {
-        img = await page.render(
+        Future<PdfImage?> renderPage() => page.render(
           fullWidth: width,
           fullHeight: height,
           backgroundColor: 0xffffffff,
@@ -1518,6 +1519,7 @@ class _PdfViewerState extends State<PdfViewer>
           flags: widget.params.limitRenderingCache ? PdfPageRenderFlags.limitedImageCache : PdfPageRenderFlags.none,
           cancellationToken: cancellationToken,
         );
+        img = await runOpenHarmonyPdfRenderSerialized(renderPage);
         if (img == null || !mounted || cancellationToken.isCanceled) return;
 
         final newImage = _PdfImageWithScale(await img.createImage(), scale);

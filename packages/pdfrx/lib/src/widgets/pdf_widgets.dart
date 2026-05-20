@@ -4,8 +4,10 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:pdfrx_engine/pdfrx_engine.dart' show pdfrxRuntimeIsOpenHarmony;
 
 import '../../pdfrx.dart';
+import '../utils/openharmony_render.dart';
 
 /// A widget that loads PDF document.
 ///
@@ -438,12 +440,15 @@ class _PdfPageViewState extends State<PdfPageView> {
 
     _cancellationToken?.cancel();
     _cancellationToken = page.createCancellationToken();
-    final pageImage = await page.render(
+    Future<PdfImage?> renderPage() => page.render(
       fullWidth: pageSize.width,
       fullHeight: pageSize.height,
       rotationOverride: widget.rotationOverride,
       cancellationToken: _cancellationToken,
     );
+    final pageImage = pdfrxRuntimeIsOpenHarmony
+        ? await runOpenHarmonyPdfRenderSerialized(renderPage)
+        : await renderPage();
     if (pageImage == null) return;
     try {
       final newImage = await pageImage.createImage();
