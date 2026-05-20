@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 
+import '../platform_host.dart';
 import 'pthread/file_access.dart';
 import 'win32/file_access.dart';
 
@@ -79,7 +80,7 @@ abstract class PdfiumFileAccessHelper {
     if (_instance == null) {
       if (Platform.isWindows) {
         _instance = PdfiumFileAccessHelperWin32();
-      } else if (Platform.isAndroid || Platform.isLinux || Platform.isIOS || Platform.isMacOS) {
+      } else if (pdfrxUseLinuxLikeNative || Platform.isIOS || Platform.isMacOS) {
         _instance = PdfiumFileAccessHelperPthread();
       } else {
         throw UnsupportedError('PdfiumFileAccessHelper is not implemented for this platform.');

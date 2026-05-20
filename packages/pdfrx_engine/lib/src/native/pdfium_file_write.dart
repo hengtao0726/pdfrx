@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 
+import '../platform_host.dart';
 import 'pthread/file_write.dart';
 import 'win32/file_write.dart';
 
@@ -52,7 +53,7 @@ abstract class PdfiumFileWriteHelper {
     if (_instance == null) {
       if (Platform.isWindows) {
         _instance = PdfiumFileWriteHelperWin32();
-      } else if (Platform.isAndroid || Platform.isLinux || Platform.isIOS || Platform.isMacOS) {
+      } else if (pdfrxUseLinuxLikeNative || Platform.isIOS || Platform.isMacOS) {
         _instance = PdfiumFileWriteHelperPthread();
       } else {
         throw UnsupportedError('PdfiumFileWriteHelper is not implemented for this platform.');

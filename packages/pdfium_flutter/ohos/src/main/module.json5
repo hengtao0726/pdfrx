@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "pdfium_flutter",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

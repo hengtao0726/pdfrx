@@ -5,10 +5,11 @@ import 'dart:io';
 import 'package:pdfium_dart/pdfium_dart.dart' as pdfium_bindings;
 
 import '../pdfrx.dart';
+import '../platform_host.dart';
 
 /// Get the module file name for pdfium.
 String _getModuleFileName() {
-  if (Platform.isAndroid) return 'libpdfium.so';
+  if (Platform.isAndroid || pdfrxRuntimeIsOpenHarmony) return 'libpdfium.so';
   if (Platform.isWindows) return 'pdfium.dll';
   if (Platform.isLinux) {
     return '${File(Platform.resolvedExecutable).parent.path}/lib/libpdfium.so';

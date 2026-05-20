@@ -1,0 +1,12 @@
+{
+  "name": "pdfium_flutter",
+  "version": "1.0.0",
+  "description": "PDFium native library for OpenHarmony (FFI)",
+  "main": "index.ets",
+  "author": "hongdou",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ohos/flutter_ohos": "file:./har/flutter.har"
+  },
+  "devDependencies": {}
+}

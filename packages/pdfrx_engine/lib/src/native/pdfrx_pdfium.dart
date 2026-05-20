@@ -31,6 +31,7 @@ import '../pdf_rect.dart';
 import '../pdf_text.dart';
 import '../pdfrx.dart';
 import '../pdfrx_entry_functions.dart';
+import '../platform_host.dart';
 import '../utils/shuffle_in_place.dart';
 import 'native_utils.dart';
 import 'pdf_file_cache.dart';
@@ -329,7 +330,9 @@ class PdfrxEntryFunctionsImpl implements PdfrxEntryFunctions {
   }) async {
     await _init();
 
-    maxSizeToCacheOnMemory ??= 1024 * 1024; // the default is 1MB
+    // OHOS: avoid PdfiumFileAccess pthread bridge (isolate + musl can SIGSEGV on large PDFs).
+    maxSizeToCacheOnMemory ??=
+        pdfrxRuntimeIsOpenHarmony ? (256 * 1024 * 1024) : (1024 * 1024);
 
     // If the file size is smaller than the specified size, load the file on memory
     if (fileSize <= maxSizeToCacheOnMemory) {

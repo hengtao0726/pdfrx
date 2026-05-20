@@ -17,6 +17,7 @@ export 'src/pdf_permissions.dart';
 export 'src/pdf_point.dart';
 export 'src/pdf_rect.dart';
 export 'src/pdf_text.dart';
+export 'src/platform_host.dart';
 export 'src/pdfrx.dart';
 export 'src/pdfrx_dart.dart';
 export 'src/pdfrx_entry_functions.dart';

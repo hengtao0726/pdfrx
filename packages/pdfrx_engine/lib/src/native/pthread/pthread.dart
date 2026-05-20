@@ -3,6 +3,8 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import '../../platform_host.dart';
+
 /// We hope pthread is always available in the process
 final DynamicLibrary _pthread = DynamicLibrary.process();
 
@@ -25,10 +27,8 @@ final pthread_cond_destroy = _pthread.lookupFunction<Int32 Function(IntPtr), int
 
 /// Size of pthread_mutex_t varies by platform
 int get sizeOfPthreadMutex {
-  if (Platform.isAndroid) {
-    return 40; // Android uses 40 bytes for pthread_mutex_t on 64-bit
-  } else if (Platform.isLinux) {
-    return 40; // Linux uses 40 bytes for pthread_mutex_t on 64-bit
+  if (pdfrxUseLinuxLikeNative) {
+    return 40; // Linux/Android/OHOS arm64
   } else if (Platform.isIOS || Platform.isMacOS) {
     return 64; // Darwin (iOS/macOS) uses 64 bytes for pthread_mutex_t on 64-bit
   }
@@ -37,10 +37,8 @@ int get sizeOfPthreadMutex {
 
 /// Size of pthread_cond_t varies by platform
 int get sizeOfPthreadCond {
-  if (Platform.isAndroid) {
-    return 48; // Android uses 48 bytes for pthread_cond_t on 64-bit
-  } else if (Platform.isLinux) {
-    return 48; // Linux uses 48 bytes for pthread_cond_t on 64-bit
+  if (pdfrxUseLinuxLikeNative) {
+    return 48; // Linux/Android/OHOS arm64
   } else if (Platform.isIOS || Platform.isMacOS) {
     return 48; // Darwin (iOS/macOS) uses 48 bytes for pthread_cond_t on 64-bit
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -8,9 +9,11 @@ import '../../../pdfrx.dart';
 final isApple = Platform.isMacOS || Platform.isIOS;
 final isAndroid = Platform.isAndroid;
 final isWindows = Platform.isWindows;
+final isOhos = !kIsWeb && defaultTargetPlatform.name == 'ohos';
 
-/// Whether the current platform is mobile (Android, iOS, or Fuchsia).
-final isMobile = Platform.isAndroid || Platform.isIOS || Platform.isFuchsia;
+/// Whether the current platform is mobile (Android, iOS, Fuchsia, or OHOS).
+final isMobile =
+    Platform.isAndroid || Platform.isIOS || Platform.isFuchsia || isOhos;
 
 /// Key pressing state of ⌘ or Control depending on the platform.
 bool get isCommandKeyPressed =>
